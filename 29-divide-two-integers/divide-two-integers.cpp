@@ -16,27 +16,20 @@ public:
         //     sign = ~sign;
         //     divisor = abs(divisor);
         // }
-        // 1. Handle the absolute worst-case integer overflow immediately
+
         if (dividend == INT_MIN && divisor == -1) {
             return INT_MAX;
         }
-
-        // 2. Determine the final sign using the XOR bitwise operator (^)
-        // If one is negative and the other is positive, they are different, so
-        // the result is negative (-1). If both are negative or both are
-        // positive, they are the same, so the result is positive (1).
         int sign = ((dividend < 0) ^ (divisor < 0)) ? -1 : 1;
-
-        // 3. Upgrade both to long long AND get their absolute values safely in
-        // one step. std::llabs() is the C++ standard function for getting the
-        // absolute value of a long long.
-        long long dividend_long = std::llabs((long long)dividend);
-        long long divisor_long = std::llabs((long long)divisor);
+        long long dividend_long = llabs((long long)dividend);
+        long long divisor_long = llabs((long long)divisor);
         long long r = dividend_long, Q = 0, temp_divisor, count;
+
         if (dividend_long == divisor_long) {
             Q = (sign == 1) ? 1 : -1;
             return Q;
         }
+
         while (r >= divisor_long) {
             count = 1;
             temp_divisor = divisor_long;
